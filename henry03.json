@@ -1,4 +1,28 @@
-{
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+  <title>My LIFF App</title>
+  <style>
+    body { padding: 256px }
+    button { display: none; width: 50%; padding: 16px 0; margin: 16px auto }
+  </style>
+</head>
+<body>
+  <button id="btnShare" onclick="sendShare()">Share Target Picker</button>
+  <button id="btnLogin" onclick="liff.login()">Log In</button>
+  <button id="btnLogOut" onclick="logOut()">Log Out</button>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    async function sendShare() {
+      const result = await liff.shareTargetPicker([
+        {
+  "messages": [
+    {
+      "type": "flex"
+      "altText": "Flex Message"
+      "contents": {
   "type": "bubble",
   "hero": {
     "type": "image",
@@ -18,8 +42,20 @@
     "layout": "vertical",
     "contents": [
       {
+        "type": "text",
+        "text": "𝐆𝐎𝐀𝐓𝐁𝐄𝐓 𝟏𝐬𝐭",
+        "weight": "bold",
+        "size": "xxl",
+        "color": "#ffffff",
+        "margin": "none",
+        "style": "normal",
+        "decoration": "none",
+        "align": "center"
+      },
+      {
         "type": "box",
         "layout": "baseline",
+        "margin": "none",
         "contents": [
           {
             "type": "icon",
@@ -47,38 +83,44 @@
             "url": "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
           }
         ],
-        "spacing": "lg",
-        "alignItems": "center",
+        "spacing": "none",
         "justifyContent": "center",
-        "offsetStart": "md",
-        "offsetBottom": "25px"
-      },
-      {
-        "type": "image",
-        "aspectMode": "fit",
-        "animated": true,
-        "position": "absolute",
-        "size": "full",
-        "url": "https://s3.ezgif.com/tmp/ezgif-3-05febea04a.png",
-        "offsetTop": "-75px",
-        "offsetStart": "15px"
+        "offsetBottom": "sm"
       },
       {
         "type": "box",
         "layout": "vertical",
+        "margin": "xs",
+        "spacing": "xs",
         "contents": [
           {
             "type": "box",
             "layout": "baseline",
             "spacing": "sm",
-            "contents": []
+            "contents": [
+              {
+                "type": "text",
+                "text": "NEW ‼️",
+                "color": "#FF0000",
+                "size": "lg",
+                "flex": 1,
+                "margin": "none"
+              },
+              {
+                "type": "text",
+                "text": "สมาชิกใหม่รับ 100.-",
+                "wrap": true,
+                "color": "#00FF00",
+                "size": "xl",
+                "flex": 3
+              }
+            ]
           }
         ],
+        "paddingStart": "xl",
         "borderWidth": "bold",
         "justifyContent": "center",
-        "cornerRadius": "xxl",
-        "offsetTop": "xxl",
-        "paddingAll": "lg"
+        "offsetBottom": "md"
       }
     ],
     "background": {
@@ -87,8 +129,12 @@
       "startColor": "#000000",
       "endColor": "#fe6a06"
     },
-    "paddingTop": "25px",
-    "paddingAll": "20px"
+    "offsetTop": "none",
+    "offsetEnd": "none",
+    "offsetStart": "none",
+    "offsetBottom": "none",
+    "paddingAll": "none",
+    "paddingStart": "sm"
   },
   "footer": {
     "type": "box",
@@ -114,7 +160,7 @@
         "action": {
           "type": "uri",
           "label": "ส่งต่อให้เพื่อนรับ",
-          "uri": "2006492133-5P3LoBZy"
+          "uri": "https://liff.line.me/2006492133-5P3LoBZy"
         },
         "color": "#00FF00",
         "offsetBottom": "sm"
@@ -126,7 +172,7 @@
       }
     ],
     "flex": 0,
-    "offsetBottom": "xs"
+    "offsetBottom": "md"
   },
   "styles": {
     "footer": {
@@ -134,3 +180,41 @@
     }
   }
 }
+    }
+  ]
+}
+ ])
+      if (result) {
+        alert(`[${result.status}] Message sent!`)
+      } else {
+        const [majorVer, minorVer, patchVer] = (liff.getLineVersion() || "").split('.');
+
+        if (minorVer === undefined) {
+          alert('ShareTargetPicker was canceled in external browser')
+          return
+        }
+
+        if (parseInt(majorVer) >= 10 && parseInt(minorVer) >= 10 && parseInt(patchVer) > 0) {
+          alert('ShareTargetPicker was canceled in LINE app')
+        }
+      }
+    }
+    function logOut() {
+      liff.logout()
+      window.location.reload()
+    }
+    async function main() {
+      await liff.init({ liffId: "2006492133-5P3LoBZy" })
+      if (liff.isLoggedIn()) {
+        document.getElementById("btnShare").style.display = "block"
+        if (!liff.isInClient()) {
+          document.getElementById("btnLogOut").style.display = "block"
+        }
+      } else {
+        document.getElementById("btnLogin").style.display = "block"
+      }
+    }
+    main()
+  </script>
+</body>
+</html>
