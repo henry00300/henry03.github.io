@@ -164,38 +164,3 @@
     }
   ]
 }
- ])
-      if (result) {
-        alert(`[${result.status}] Message sent!`)
-      } else {
-        const [majorVer, minorVer, patchVer] = (liff.getLineVersion() || "").split('.');
-
-        if (minorVer === undefined) {
-          alert('ShareTargetPicker was canceled in external browser')
-          return
-        }
-
-        if (parseInt(majorVer) >= 10 && parseInt(minorVer) >= 10 && parseInt(patchVer) > 0) {
-          alert('ShareTargetPicker was canceled in LINE app')
-        }
-      }
-    }
-    function logOut() {
-      liff.logout()
-      window.location.reload()
-    }
-    async function main() {
-      await liff.init({ liffId: "2006492133-5P3LoBZy" })
-      if (liff.isLoggedIn()) {
-        document.getElementById("btnShare").style.display = "block"
-        if (!liff.isInClient()) {
-          document.getElementById("btnLogOut").style.display = "block"
-        }
-      } else {
-        document.getElementById("btnLogin").style.display = "block"
-      }
-    }
-    main()
-  </script>
-</body>
-</html>
